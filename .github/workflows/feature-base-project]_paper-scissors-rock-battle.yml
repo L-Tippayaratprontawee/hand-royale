@@ -34,4 +34,4 @@ jobs:
           app-name: 'paper-scissors-rock-battle'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A784A7CAE8B142448CBF56CA1DB1906B }}
-          package: "./build"
+          package: ./build
