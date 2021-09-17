@@ -26,7 +26,8 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-
+        run: dir
+        
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -34,4 +35,4 @@ jobs:
           app-name: 'paper-scissors-rock-battle'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A784A7CAE8B142448CBF56CA1DB1906B }}
-          package: "./static"
+          package: "build"
