@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import React, { useState } from 'react'
+import { Button } from 'antd'
+import 'antd/dist/antd.css'
+import styles from './App.module.css'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    const player2Hand = 'ROCK'
+    ///const [player1Hand, setPlayer1Hand] = useState('')
+    const [matchResult, setMatchResult] = useState('')
+    const validateMatch = (player1Hand: string) => {
+        if (player1Hand === player2Hand) {
+            setMatchResult('DRAW!')
+        } else if (player1Hand === 'PAPER') {
+            setMatchResult('WIN!')
+        } else {
+            setMatchResult('LOSE!')
+        }
+    }
+    const size = 'large'
+    return (
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+            <h1>{matchResult}</h1>
+
+            <Button type="primary" size={size} className={styles.button} onClick={() => validateMatch('PAPER')}>
+                PAPER
+            </Button>
+            <Button type="primary" size={size} className={styles.button} onClick={() => validateMatch('SCISSORS')}>
+                SCISSORS
+            </Button>
+            <Button type="primary" size={size} className={styles.button} onClick={() => validateMatch('ROCK')}>
+                ROCK
+            </Button>
+        </div>
+    )
 }
 
-export default App;
+export default App

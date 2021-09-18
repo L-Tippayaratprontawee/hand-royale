@@ -1,0 +1,14 @@
+.button {
+  background-color: white;
+  border: none;
+  color: purple;
+  padding: none;
+  font-size: 16px;
+  font-family: fantasy;
+  cursor: unset;
+}
+
+.button:hover {
+  background-color: purple;
+  border-radius: 50px;
+}
