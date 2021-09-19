@@ -5,12 +5,11 @@ import 'antd/dist/antd.css'
 import styles from './App.module.scss'
 import { UserOutlined } from '@ant-design/icons'
 import { Content, Header } from 'antd/lib/layout/layout'
-import classnames from 'classnames'
 
 function App() {
     const size = 'large'
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
-    const [matchResult, setMatchResult] = useState('')
+    const [, setMatchResult] = useState('')
     const validateMatch = (player1Hand: string) => {
         const player2Hand = handSelection[Math.floor(Math.random() * handSelection.length)]
         console.log({ player2Hand })
