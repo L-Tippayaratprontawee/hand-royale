@@ -6,9 +6,10 @@ import { UserOutlined } from '@ant-design/icons'
 type PlayerCardProps = {
     username: string
     profileUrl?: string
+    validateMatch: (player1Hand: string) => void
 }
 
-export const PlayerCard = ({ username, profileUrl }: PlayerCardProps) => {
+export const PlayerCard = ({ username, profileUrl, validateMatch }: PlayerCardProps) => {
     return (
         <>
             <Card className={styles.playerCard}>
@@ -23,13 +24,18 @@ export const PlayerCard = ({ username, profileUrl }: PlayerCardProps) => {
                 </div>
                 <h1 style={{ textAlign: 'center' }}>{username}</h1>
                 <div className={styles.container}>
-                    <Button size="large" shape="round" className={styles.button}>
+                    <Button size="large" shape="round" className={styles.button} onClick={() => validateMatch('PAPER')}>
                         PAPER
                     </Button>
-                    <Button size="large" shape="round" className={styles.button}>
+                    <Button
+                        size="large"
+                        shape="round"
+                        className={styles.button}
+                        onClick={() => validateMatch('SCISSORS')}
+                    >
                         SCISSORS
                     </Button>
-                    <Button size="large" shape="round" className={styles.button}>
+                    <Button size="large" shape="round" className={styles.button} onClick={() => validateMatch('ROCK')}>
                         ROCK
                     </Button>
                 </div>
