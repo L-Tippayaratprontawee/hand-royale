@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Modal, Spin } from 'antd'
 import 'antd/dist/antd.css'
 import styles from './App.module.scss'
@@ -9,6 +9,32 @@ import { PlayerCard } from './components/PlayerCard'
 function App() {
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
     const [isLoading, setIsLoading] = useState(false)
+
+    const [randomPlayer, setRandomPlayer] = useState<RandomPlayer>()
+    type RandomPlayer = {
+        name: {
+            title: string
+            first: string
+            last: string
+        }
+        picture: {
+            large: string
+        }
+    }
+    useEffect(() => {
+        fetch('https://randomuser.me/api/')
+            .then((res) => res.json())
+            .then(
+                (json) => {
+                    console.log(json)
+                    const randomPlayer: RandomPlayer = json.results[0]
+                    setRandomPlayer(randomPlayer)
+                },
+                (error) => {
+                    console.log(error)
+                },
+            )
+    }, [])
 
     const validateMatch = async (player1Hand: string) => {
         setIsLoading(true)
@@ -60,7 +86,11 @@ function App() {
         <div>
             <Layout>
                 <Content className={styles.content}>
-                    <PlayerCard username="Paul" validateMatch={validateMatch} />
+                    <PlayerCard
+                        username={`${randomPlayer?.name.title} ${randomPlayer?.name.first} ${randomPlayer?.name.last}`}
+                        profileUrl={randomPlayer?.picture.large}
+                        validateMatch={validateMatch}
+                    />
                     {isLoading ? (
                         <Spin className={styles.container} size="large" />
                     ) : (

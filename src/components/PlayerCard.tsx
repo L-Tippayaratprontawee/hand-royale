@@ -4,7 +4,7 @@ import styles from './PlayerCard.module.scss'
 import { UserOutlined } from '@ant-design/icons'
 
 type PlayerCardProps = {
-    username: string
+    username?: string
     profileUrl?: string
     validateMatch: (player1Hand: string) => void
 }
