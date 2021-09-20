@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useState } from 'react'
-import { Layout, Spin } from 'antd'
+import { Layout, Modal, Spin } from 'antd'
 import 'antd/dist/antd.css'
 import styles from './App.module.scss'
-import { Content, Header } from 'antd/lib/layout/layout'
+import { Content } from 'antd/lib/layout/layout'
 import { PlayerCard } from './components/PlayerCard'
 
 function App() {
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
-    const [matchResult, setMatchResult] = useState('Player 1 vs Player 2')
     const [isLoading, setIsLoading] = useState(false)
 
     const validateMatch = async (player1Hand: string) => {
@@ -16,39 +15,56 @@ function App() {
         await new Promise((r) => setTimeout(r, 1000))
         const player2Hand = handSelection[Math.floor(Math.random() * handSelection.length)]
         if (player1Hand === player2Hand) {
-            setMatchResult('You both choose ' + player1Hand + ". IT'S A DRAW!")
+            displayMatchResult('You both choose ' + player1Hand + ". IT'S A DRAW!", 'DRAW')
         } else if (player1Hand === 'PAPER') {
             if (player2Hand === 'ROCK') {
-                setMatchResult('Paper wraps Rock. YOU WIN!')
+                displayMatchResult('Paper wraps Rock. YOU WIN!', 'WIN')
             } else {
-                setMatchResult('Scissors cuts Paper. YOU LOSE!')
+                displayMatchResult('Scissors cuts Paper. YOU LOSE!', 'LOSE')
             }
         } else if (player1Hand === 'SCISSORS') {
             if (player2Hand === 'PAPER') {
-                setMatchResult('Scissors cuts Paper. YOU WIN!')
+                displayMatchResult('Scissors cuts Paper. YOU WIN!', 'WIN')
             } else {
-                setMatchResult('Rock destroys Scissors. YOU LOSE!')
+                displayMatchResult('Rock destroys Scissors. YOU LOSE!', 'LOSE')
             }
         } else if (player1Hand === 'ROCK') {
             if (player2Hand === 'SCISSORS') {
-                setMatchResult('Rock destroys Scissors. YOU WIN!')
+                displayMatchResult('Rock destroys Scissors. YOU WIN!', 'WIN')
             } else {
-                setMatchResult('Paper wraps Rock. YOU LOSE!')
+                displayMatchResult('Paper wraps Rock. YOU LOSE!', 'LOSE')
             }
         }
         setIsLoading(false)
     }
 
+    const displayMatchResult = (message: string, result: string) => {
+        if (result == 'WIN') {
+            Modal.success({
+                content: message,
+                centered: true,
+            })
+        } else if (result == 'LOSE') {
+            Modal.error({
+                content: message,
+                centered: true,
+            })
+        } else {
+            Modal.warning({
+                content: message,
+                centered: true,
+            })
+        }
+    }
     return (
         <div>
             <Layout>
-                <Header>Header</Header>
                 <Content className={styles.content}>
                     <PlayerCard username="Paul" validateMatch={validateMatch} />
                     {isLoading ? (
                         <Spin className={styles.container} size="large" />
                     ) : (
-                        <h1 style={{ textAlign: 'center' }}>{matchResult}</h1>
+                        <h1 style={{ textAlign: 'center' }}> L vs Paul</h1>
                     )}
                     <PlayerCard
                         username="L"
