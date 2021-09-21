@@ -12,7 +12,8 @@ function App() {
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
     const [isPlayer2Thinking, setIsPlayer2Thinking] = useState(false)
     const [isDataLoaded, setIsDataLoaded] = useState(true)
-    const [score, setScore] = useState<boolean>(false)
+    const [isRefresh, setIsRefresh] = useState<boolean>(false)
+    const [score, setScore] = useState(0)
 
     const [randomPlayer, setRandomPlayer] = useState<RandomPlayer>()
     type RandomPlayer = {
@@ -29,7 +30,6 @@ function App() {
             .then((res) => res.json())
             .then(
                 (json) => {
-                    console.log(json)
                     const randomPlayer: RandomPlayer = json.results[0]
                     setRandomPlayer(randomPlayer)
                     setIsDataLoaded(false)
@@ -38,7 +38,7 @@ function App() {
                     console.log(error)
                 },
             )
-    }, [score])
+    }, [isRefresh])
 
     const validateMatch = async (player1Hand: string) => {
         setIsPlayer2Thinking(true)
@@ -73,19 +73,21 @@ function App() {
             Modal.success({
                 content: message,
                 centered: true,
-                onOk: () => setScore(!score),
+                onOk: () => setIsRefresh(!isRefresh),
             })
+            setScore((prevScore) => prevScore + 1)
         } else if (result == 'LOSE') {
             Modal.error({
                 content: message,
                 centered: true,
-                onOk: () => setScore(!score),
+                onOk: () => setIsRefresh(!isRefresh),
             })
+            setScore(0)
         } else {
             Modal.warning({
                 content: message,
                 centered: true,
-                onOk: () => setScore(!score),
+                onOk: () => setIsRefresh(!isRefresh),
             })
         }
     }
@@ -121,6 +123,7 @@ function App() {
                                     username="L"
                                     profileUrl="https://scontent.fakl4-1.fna.fbcdn.net/v/t1.6435-9/240873839_4240953529353032_4313338147101475536_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=WYlKF4kcK8EAX_qaRB_&tn=DKCNYcCS9aa7OF0L&_nc_ht=scontent.fakl4-1.fna&oh=fe93d5490cdbedf6a3b6c1b89fa722b5&oe=616BC865"
                                     validateMatch={validateMatch}
+                                    score={score}
                                 />
                             </Route>
                             <Route path="/match-history">
