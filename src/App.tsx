@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useEffect, useState } from 'react'
-import { Layout, Modal, Spin } from 'antd'
+import { Button, Layout, Modal, Spin } from 'antd'
 import 'antd/dist/antd.css'
 import styles from './App.module.scss'
 import { Content } from 'antd/lib/layout/layout'
 import { PlayerCard } from './components/PlayerCard'
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
+import { MatchHistory } from './components/History'
 
 function App() {
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
     const [isPlayer2Thinking, setIsPlayer2Thinking] = useState(false)
     const [isDataLoaded, setIsDataLoaded] = useState(true)
+    const [isRefresh, setIsRefresh] = useState<boolean>(false)
+    const [score, setScore] = useState(0)
 
     const [randomPlayer, setRandomPlayer] = useState<RandomPlayer>()
     type RandomPlayer = {
@@ -26,7 +30,6 @@ function App() {
             .then((res) => res.json())
             .then(
                 (json) => {
-                    console.log(json)
                     const randomPlayer: RandomPlayer = json.results[0]
                     setRandomPlayer(randomPlayer)
                     setIsDataLoaded(false)
@@ -35,7 +38,7 @@ function App() {
                     console.log(error)
                 },
             )
-    }, [])
+    }, [isRefresh])
 
     const validateMatch = async (player1Hand: string) => {
         setIsPlayer2Thinking(true)
@@ -70,43 +73,67 @@ function App() {
             Modal.success({
                 content: message,
                 centered: true,
+                onOk: () => setIsRefresh(!isRefresh),
             })
+            setScore((prevScore) => prevScore + 1)
         } else if (result == 'LOSE') {
             Modal.error({
                 content: message,
                 centered: true,
+                onOk: () => setIsRefresh(!isRefresh),
             })
+            setScore(0)
         } else {
             Modal.warning({
                 content: message,
                 centered: true,
+                onOk: () => setIsRefresh(!isRefresh),
             })
         }
     }
 
     return (
-        <div>
-            <Layout>
-                <Content className={styles.content}>
-                    <PlayerCard
-                        username={`${randomPlayer?.name.first} ${randomPlayer?.name.last}`}
-                        profileUrl={randomPlayer?.picture.large}
-                        validateMatch={validateMatch}
-                        isLoading={isDataLoaded}
-                    />
-                    {isPlayer2Thinking || isDataLoaded ? (
-                        <Spin className={styles.container} size="large" />
-                    ) : (
-                        <h1 style={{ textAlign: 'center' }}> L vs {randomPlayer?.name.first}</h1>
-                    )}
-                    <PlayerCard
-                        username="L"
-                        profileUrl="https://scontent.fakl4-1.fna.fbcdn.net/v/t1.6435-9/240873839_4240953529353032_4313338147101475536_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=WYlKF4kcK8EAX_qaRB_&tn=DKCNYcCS9aa7OF0L&_nc_ht=scontent.fakl4-1.fna&oh=fe93d5490cdbedf6a3b6c1b89fa722b5&oe=616BC865"
-                        validateMatch={validateMatch}
-                    />
-                </Content>
-            </Layout>
-        </div>
+        <BrowserRouter>
+            <div>
+                <Layout>
+                    <Content className={styles.content}>
+                        <div className={styles.container}>
+                            <Button className={styles.button}>
+                                <Link to="/">Battle Field</Link>
+                            </Button>
+                            <Button className={styles.button}>
+                                <Link to="/match-history">Match History</Link>
+                            </Button>
+                        </div>
+                        <Switch>
+                            <Route exact path="/">
+                                <PlayerCard
+                                    username={`${randomPlayer?.name.first} ${randomPlayer?.name.last}`}
+                                    profileUrl={randomPlayer?.picture.large}
+                                    validateMatch={validateMatch}
+                                    isLoading={isDataLoaded}
+                                    buttonDisable={true}
+                                />
+                                {isPlayer2Thinking || isDataLoaded ? (
+                                    <Spin className={styles.container} size="large" />
+                                ) : (
+                                    <h1 style={{ textAlign: 'center' }}> L vs {randomPlayer?.name.first}</h1>
+                                )}
+                                <PlayerCard
+                                    username="L"
+                                    profileUrl="https://scontent.fakl4-1.fna.fbcdn.net/v/t1.6435-9/240873839_4240953529353032_4313338147101475536_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=WYlKF4kcK8EAX_qaRB_&tn=DKCNYcCS9aa7OF0L&_nc_ht=scontent.fakl4-1.fna&oh=fe93d5490cdbedf6a3b6c1b89fa722b5&oe=616BC865"
+                                    validateMatch={validateMatch}
+                                    score={score}
+                                />
+                            </Route>
+                            <Route path="/match-history">
+                                <MatchHistory />
+                            </Route>
+                        </Switch>
+                    </Content>
+                </Layout>
+            </div>
+        </BrowserRouter>
     )
 }
 
