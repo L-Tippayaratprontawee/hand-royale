@@ -117,7 +117,9 @@ function App() {
                                 {isPlayer2Thinking || isDataLoaded ? (
                                     <Spin className={styles.container} size="large" />
                                 ) : (
-                                    <h1 style={{ textAlign: 'center' }}> L vs {randomPlayer?.name.first}</h1>
+                                    <h1 style={{ textAlign: 'center', fontFamily: 'monospace' }}>
+                                        L vs {randomPlayer?.name.first}
+                                    </h1>
                                 )}
                                 <PlayerCard
                                     username="L"
