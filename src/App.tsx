@@ -8,12 +8,12 @@ import { PlayerCard } from './components/PlayerCard'
 
 function App() {
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
-    const [isLoading, setIsLoading] = useState(false)
+    const [isPlayer2Thinking, setIsPlayer2Thinking] = useState(false)
+    const [isDataLoaded, setIsDataLoaded] = useState(true)
 
     const [randomPlayer, setRandomPlayer] = useState<RandomPlayer>()
     type RandomPlayer = {
         name: {
-            title: string
             first: string
             last: string
         }
@@ -29,6 +29,7 @@ function App() {
                     console.log(json)
                     const randomPlayer: RandomPlayer = json.results[0]
                     setRandomPlayer(randomPlayer)
+                    setIsDataLoaded(false)
                 },
                 (error) => {
                     console.log(error)
@@ -37,7 +38,7 @@ function App() {
     }, [])
 
     const validateMatch = async (player1Hand: string) => {
-        setIsLoading(true)
+        setIsPlayer2Thinking(true)
         await new Promise((r) => setTimeout(r, 1000))
         const player2Hand = handSelection[Math.floor(Math.random() * handSelection.length)]
         if (player1Hand === player2Hand) {
@@ -61,7 +62,7 @@ function App() {
                 displayMatchResult('Paper wraps Rock. YOU LOSE!', 'LOSE')
             }
         }
-        setIsLoading(false)
+        setIsPlayer2Thinking(false)
     }
 
     const displayMatchResult = (message: string, result: string) => {
@@ -82,19 +83,21 @@ function App() {
             })
         }
     }
+
     return (
         <div>
             <Layout>
                 <Content className={styles.content}>
                     <PlayerCard
-                        username={`${randomPlayer?.name.title} ${randomPlayer?.name.first} ${randomPlayer?.name.last}`}
+                        username={`${randomPlayer?.name.first} ${randomPlayer?.name.last}`}
                         profileUrl={randomPlayer?.picture.large}
                         validateMatch={validateMatch}
+                        isLoading={isDataLoaded}
                     />
-                    {isLoading ? (
+                    {isPlayer2Thinking || isDataLoaded ? (
                         <Spin className={styles.container} size="large" />
                     ) : (
-                        <h1 style={{ textAlign: 'center' }}> L vs Paul</h1>
+                        <h1 style={{ textAlign: 'center' }}> L vs {randomPlayer?.name.first}</h1>
                     )}
                     <PlayerCard
                         username="L"

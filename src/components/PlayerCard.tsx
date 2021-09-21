@@ -7,12 +7,13 @@ type PlayerCardProps = {
     username?: string
     profileUrl?: string
     validateMatch: (player1Hand: string) => void
+    isLoading?: boolean
 }
 
-export const PlayerCard = ({ username, profileUrl, validateMatch }: PlayerCardProps) => {
+export const PlayerCard = ({ username, profileUrl, validateMatch, isLoading = false }: PlayerCardProps) => {
     return (
         <>
-            <Card className={styles.playerCard}>
+            <Card className={styles.playerCard} loading={isLoading}>
                 <div className={styles.container}>
                     <Avatar
                         shape="circle"
