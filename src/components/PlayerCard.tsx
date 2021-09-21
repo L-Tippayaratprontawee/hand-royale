@@ -8,9 +8,10 @@ type PlayerCardProps = {
     profileUrl?: string
     validateMatch: (player1Hand: string) => void
     isLoading?: boolean
+    buttonDisable?: boolean
 }
 
-export const PlayerCard = ({ username, profileUrl, validateMatch, isLoading = false }: PlayerCardProps) => {
+export const PlayerCard = ({ username, profileUrl, validateMatch, isLoading, buttonDisable }: PlayerCardProps) => {
     return (
         <>
             <Card className={styles.playerCard} loading={isLoading}>
@@ -25,10 +26,17 @@ export const PlayerCard = ({ username, profileUrl, validateMatch, isLoading = fa
                 </div>
                 <h1 style={{ textAlign: 'center' }}>{username}</h1>
                 <div className={styles.container}>
-                    <Button size="large" shape="round" className={styles.button} onClick={() => validateMatch('PAPER')}>
+                    <Button
+                        disabled={buttonDisable}
+                        size="large"
+                        shape="round"
+                        className={styles.button}
+                        onClick={() => validateMatch('PAPER')}
+                    >
                         PAPER
                     </Button>
                     <Button
+                        disabled={buttonDisable}
                         size="large"
                         shape="round"
                         className={styles.button}
@@ -36,7 +44,13 @@ export const PlayerCard = ({ username, profileUrl, validateMatch, isLoading = fa
                     >
                         SCISSORS
                     </Button>
-                    <Button size="large" shape="round" className={styles.button} onClick={() => validateMatch('ROCK')}>
+                    <Button
+                        disabled={buttonDisable}
+                        size="large"
+                        shape="round"
+                        className={styles.button}
+                        onClick={() => validateMatch('ROCK')}
+                    >
                         ROCK
                     </Button>
                 </div>

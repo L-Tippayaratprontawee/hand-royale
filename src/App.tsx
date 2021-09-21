@@ -93,6 +93,7 @@ function App() {
                         profileUrl={randomPlayer?.picture.large}
                         validateMatch={validateMatch}
                         isLoading={isDataLoaded}
+                        buttonDisable={true}
                     />
                     {isPlayer2Thinking || isDataLoaded ? (
                         <Spin className={styles.container} size="large" />
