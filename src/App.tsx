@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useEffect, useState } from 'react'
-import { Button, Layout, Modal, Spin } from 'antd'
+import { Layout, Modal, Spin } from 'antd'
 import 'antd/dist/antd.css'
 import styles from './App.module.scss'
 import { Content } from 'antd/lib/layout/layout'
 import { PlayerCard } from './components/PlayerCard'
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { MatchHistory } from './components/History'
 import { Header } from './components/Header'
 
