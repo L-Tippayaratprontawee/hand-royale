@@ -5,7 +5,7 @@ import 'antd/dist/antd.css'
 import styles from './App.module.scss'
 import { Content } from 'antd/lib/layout/layout'
 import { PlayerCard } from './components/PlayerCard'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { MatchHistory } from './components/History'
 import { Header } from './components/Header'
 
@@ -94,42 +94,40 @@ function App() {
     }
 
     return (
-        <BrowserRouter>
-            <div>
-                <Layout>
-                    <Content className={styles.content}>
-                        <Header></Header>
-                        <Switch>
-                            <Route exact path="/">
-                                <PlayerCard
-                                    username={`${randomPlayer?.name.first} ${randomPlayer?.name.last}`}
-                                    profileUrl={randomPlayer?.picture.large}
-                                    validateMatch={validateMatch}
-                                    isLoading={isDataLoaded}
-                                    buttonDisable={true}
-                                />
-                                {isPlayer2Thinking || isDataLoaded ? (
-                                    <Spin className={styles.container} size="large" />
-                                ) : (
-                                    <h1 style={{ textAlign: 'center', fontFamily: 'monospace' }}>
-                                        L vs {randomPlayer?.name.first}
-                                    </h1>
-                                )}
-                                <PlayerCard
-                                    username="L"
-                                    profileUrl="https://scontent.fakl4-1.fna.fbcdn.net/v/t1.6435-9/240873839_4240953529353032_4313338147101475536_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=WYlKF4kcK8EAX_qaRB_&tn=DKCNYcCS9aa7OF0L&_nc_ht=scontent.fakl4-1.fna&oh=fe93d5490cdbedf6a3b6c1b89fa722b5&oe=616BC865"
-                                    validateMatch={validateMatch}
-                                    score={score}
-                                />
-                            </Route>
-                            <Route path="/match-history">
-                                <MatchHistory />
-                            </Route>
-                        </Switch>
-                    </Content>
-                </Layout>
-            </div>
-        </BrowserRouter>
+        <div>
+            <Layout>
+                <Content className={styles.content}>
+                    <Header></Header>
+                    <Switch>
+                        <Route exact path="/">
+                            <PlayerCard
+                                username={`${randomPlayer?.name.first} ${randomPlayer?.name.last}`}
+                                profileUrl={randomPlayer?.picture.large}
+                                validateMatch={validateMatch}
+                                isLoading={isDataLoaded}
+                                buttonDisable={true}
+                            />
+                            {isPlayer2Thinking || isDataLoaded ? (
+                                <Spin className={styles.container} size="large" />
+                            ) : (
+                                <h1 style={{ textAlign: 'center', fontFamily: 'monospace' }}>
+                                    L vs {randomPlayer?.name.first}
+                                </h1>
+                            )}
+                            <PlayerCard
+                                username="L"
+                                profileUrl="https://scontent.fakl4-1.fna.fbcdn.net/v/t1.6435-9/240873839_4240953529353032_4313338147101475536_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=WYlKF4kcK8EAX_qaRB_&tn=DKCNYcCS9aa7OF0L&_nc_ht=scontent.fakl4-1.fna&oh=fe93d5490cdbedf6a3b6c1b89fa722b5&oe=616BC865"
+                                validateMatch={validateMatch}
+                                score={score}
+                            />
+                        </Route>
+                        <Route path="/match-history">
+                            <MatchHistory />
+                        </Route>
+                    </Switch>
+                </Content>
+            </Layout>
+        </div>
     )
 }
 
