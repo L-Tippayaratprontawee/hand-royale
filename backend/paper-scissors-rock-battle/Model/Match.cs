@@ -11,7 +11,7 @@ namespace paper_scissors_rock_battle.Model
         [Key]
         public int Id { get; set; }
         [Required]
-        public string result { get; set; }
+        public string Result { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
