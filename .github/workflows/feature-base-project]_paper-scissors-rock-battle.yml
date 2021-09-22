@@ -7,11 +7,15 @@ on:
   push:
     branches:
       - main
+      - feature/hand-seceletion-icons
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
+    default: 
+      run:
+        working-directory: "./frontend"
 
     steps:
       - uses: actions/checkout@v2
@@ -36,4 +40,4 @@ jobs:
           app-name: 'paper-scissors-rock-battle'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A784A7CAE8B142448CBF56CA1DB1906B }}
-          package: "build"
+          package: "./frontend/build"
