@@ -1,30 +1,50 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client'
+import { Avatar, Table } from 'antd'
+import { PlayerCard } from './PlayerCard'
 // import styles from '../App.module.scss'
 
 export const MatchHistory = () => {
-    const EXCHANGE_RATES = gql`
-        query GetExchangeRates {
-            rates(currency: "USD") {
-                currency
-                rate
+    const MATCH_HISTORY = gql`
+        query GetMatchHistory {
+            matches {
+                id
+                result
+                player {
+                    name
+                    imageURL
+                }
             }
         }
     `
-    const { loading, error, data } = useQuery(EXCHANGE_RATES)
+    type MatchHistoryProps = {
+        id: number
+        result: string
+        player: {
+            name: string
+            imageURL: string
+        }
+    }
+    const { loading, error, data } = useQuery(MATCH_HISTORY)
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error :(</p>
 
-    return data.rates.map(({ currency, rate }: { currency: string; rate: number }) => (
-        <div key={currency}>
-            <p>
-                {currency}: {rate}
-            </p>
-        </div>
-    ))
+    // return data.matches.map(({ id, result, player }: MatchHistoryProps) => (
+    //     <div key={id}>
+    //         <p>
+    //             <Avatar shape="circle" size={50} src={player.imageURL} />
+    //             You {result} against {player.name}
+    //         </p>
+    //     </div>
+    // ))
+
+    const columns = [
+        {
+            title: 'Result',
+            dataIndex: 'result',
+            key: 'result',
+        },
+    ]
+
+    return <Table columns={columns} dataSource={data.matches} />
 }
-// return (
-//     <div className={styles.container}>
-//         <h1> This is your match history </h1>
-//     </div>
-// )
