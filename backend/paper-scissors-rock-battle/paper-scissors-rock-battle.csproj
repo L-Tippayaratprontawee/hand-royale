@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>paper_scissors_rock_battle</RootNamespace>
+	<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
