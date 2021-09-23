@@ -35,7 +35,7 @@ namespace paper_scissors_rock_battle
         options.AddPolicy(name: MyAllowSpecificOrigins,
                           builder =>
                           {
-                              builder.WithOrigins("http://localhost:3000")
+                              builder.WithOrigins("http://localhost:3000", "https://paper-scissors-rock-battle.azurewebsites.net")
                                                     .AllowAnyHeader()
                                                     .AllowAnyMethod();
                           });
@@ -66,7 +66,7 @@ namespace paper_scissors_rock_battle
             app.UseRouting();
 
             app.UseCors(builder => {
-                builder.WithOrigins("http://localhost:3000")
+                builder.WithOrigins("http://localhost:3000", "https://paper-scissors-rock-battle.azurewebsites.net")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
