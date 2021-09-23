@@ -30,27 +30,26 @@ namespace paper_scissors_rock_battle
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-             services.AddCors(options =>
-    {
-        options.AddPolicy(name: MyAllowSpecificOrigins,
-                          builder =>
-                          {
-                              builder.WithOrigins("http://localhost:3000", "https://paper-scissors-rock-battle.azurewebsites.net")
-                                                    .AllowAnyHeader()
-                                                    .AllowAnyMethod();
-                          });
-    });
+            services.AddCors(options =>
+   {
+       options.AddPolicy(name: MyAllowSpecificOrigins,
+                         builder =>
+                         {
+                             builder.WithOrigins("http://localhost:3000", "https://paper-scissors-rock-battle.azurewebsites.net")
+                                                   .AllowAnyHeader()
+                                                   .AllowAnyMethod();
+                         });
+   });
 
             services.AddPooledDbContextFactory<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services
                 .AddGraphQLServer()
-                .AddQueryType(d => d.Name("Query"))     //create an empty query object
-                    .AddTypeExtension<MatchQueries>()  //extend the query
-                .AddFiltering()
-                .AddSorting()
-                .AddProjections();
+                .AddQueryType(d => d.Name("Query"))
+                    .AddTypeExtension<MatchQueries>()
+                .AddMutationType(d => d.Name("Mutation"))
+                    .AddTypeExtension<MatchMutations>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
