@@ -11,11 +11,15 @@ namespace paper_scissors_rock_battle.Model
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Result { get; set; }
+        public string Result { get; set; } = null!;
         [Required]
-        public string Name { get; set; }
-        [Required]
-        public string ImageURI { get; set; }
+        public int PlayerId { get; set; }
+        public Player Player { get; set; } = null!;
+
+        //        [Required]
+        //        public string Name { get; set; }
+        //        [Required]
+        //        public string ImageURL { get; set; }
 
     }
 }

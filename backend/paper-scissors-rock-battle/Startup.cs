@@ -36,7 +36,10 @@ namespace paper_scissors_rock_battle
             services
                 .AddGraphQLServer()
                 .AddQueryType(d => d.Name("Query"))     //create an empty query object
-                    .AddTypeExtension<MatchQueries>();  //extend the query
+                    .AddTypeExtension<MatchQueries>()  //extend the query
+                .AddFiltering()
+                .AddSorting()
+                .AddProjections();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
