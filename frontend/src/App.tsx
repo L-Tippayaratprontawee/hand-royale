@@ -8,6 +8,7 @@ import { PlayerCard } from './components/PlayerCard'
 import { Route, Switch } from 'react-router-dom'
 import { MatchHistory } from './components/History'
 import { Header } from './components/Header'
+import { gql, useMutation } from '@apollo/client'
 
 function App() {
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
@@ -15,6 +16,17 @@ function App() {
     const [isDataLoaded, setIsDataLoaded] = useState(true)
     const [isRefresh, setIsRefresh] = useState<boolean>(false)
     const [score, setScore] = useState(0)
+    const ADD_MATCH = gql`
+        mutation addMatch($result: String!, $opponentName: String!, $opponentImageURL: String!) {
+            addMatch(input: { result: $result, opponentName: $opponentName, opponentImageURL: $opponentImageURL }) {
+                id
+                result
+                opponentName
+                opponentImageURL
+            }
+        }
+    `
+    const [addMatch] = useMutation(ADD_MATCH)
 
     const [randomPlayer, setRandomPlayer] = useState<RandomPlayer>()
     type RandomPlayer = {
@@ -45,28 +57,43 @@ function App() {
         setIsPlayer2Thinking(true)
         await new Promise((r) => setTimeout(r, 1000))
         const player2Hand = handSelection[Math.floor(Math.random() * handSelection.length)]
+        let matchResult = ''
         if (player1Hand === player2Hand) {
             displayMatchResult('You both choose ' + player1Hand + ". IT'S A DRAW!", 'DRAW')
+            matchResult = 'DRAW'
         } else if (player1Hand === 'PAPER') {
             if (player2Hand === 'ROCK') {
                 displayMatchResult('Paper wraps Rock. YOU WIN!', 'WIN')
+                matchResult = 'WIN'
             } else {
                 displayMatchResult('Scissors cuts Paper. YOU LOSE!', 'LOSE')
+                matchResult = 'LOSE'
             }
         } else if (player1Hand === 'SCISSORS') {
             if (player2Hand === 'PAPER') {
                 displayMatchResult('Scissors cuts Paper. YOU WIN!', 'WIN')
+                matchResult = 'WIN'
             } else {
                 displayMatchResult('Rock destroys Scissors. YOU LOSE!', 'LOSE')
+                matchResult = 'LOSE'
             }
         } else if (player1Hand === 'ROCK') {
             if (player2Hand === 'SCISSORS') {
                 displayMatchResult('Rock destroys Scissors. YOU WIN!', 'WIN')
+                matchResult = 'WIN'
             } else {
                 displayMatchResult('Paper wraps Rock. YOU LOSE!', 'LOSE')
+                matchResult = 'LOSE'
             }
         }
         setIsPlayer2Thinking(false)
+        addMatch({
+            variables: {
+                result: matchResult,
+                opponentName: `${randomPlayer?.name.first} ${randomPlayer?.name.last}`,
+                opponentImageURL: `${randomPlayer?.picture.large}`,
+            },
+        })
     }
 
     const displayMatchResult = (message: string, result: string) => {
@@ -111,7 +138,7 @@ function App() {
                                 <Spin className={styles.container} size="large" />
                             ) : (
                                 <h1 style={{ textAlign: 'center', fontFamily: 'monospace' }}>
-                                    L vs {randomPlayer?.name.first}
+                                    <b>L vs {randomPlayer?.name.first}</b>
                                 </h1>
                             )}
                             <PlayerCard

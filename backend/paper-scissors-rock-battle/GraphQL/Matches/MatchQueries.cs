@@ -14,9 +14,6 @@ namespace paper_scissors_rock_battle.GraphQL.Matches
     public class MatchQueries
     {
         [UseDbContext(typeof(AppDbContext))]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
         public IQueryable<Match> GetMatches([ScopedService] AppDbContext context)
         {
             return context.Matches;
@@ -24,11 +21,3 @@ namespace paper_scissors_rock_battle.GraphQL.Matches
 
     }
 }
-
-//    {
-//        public Match GetMatches() =>
-//           new Match
-//            {
-//                Result = "WIN",
-//                Name = "Paul"
-//            }; 
