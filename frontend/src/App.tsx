@@ -8,6 +8,7 @@ import { PlayerCard } from './components/PlayerCard'
 import { Route, Switch } from 'react-router-dom'
 import { MatchHistory } from './components/History'
 import { Header } from './components/Header'
+import AddMatch from './components/AddMatch'
 
 function App() {
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
@@ -120,6 +121,7 @@ function App() {
                                 validateMatch={validateMatch}
                                 score={score}
                             />
+                            <AddMatch />
                         </Route>
                         <Route path="/match-history">
                             <MatchHistory />
