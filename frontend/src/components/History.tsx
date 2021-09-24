@@ -8,41 +8,38 @@ export const MatchHistory = () => {
             matches {
                 id
                 result
-                player {
-                    name
-                    imageURL
-                }
+                opponentName
+                opponentImageURL
             }
         }
     `
     type MatchHistoryProps = {
         id: number
         result: string
-        player: {
-            name: string
-            imageURL: string
-        }
+        opponentName: string
+        opponentImageURL: string
     }
+
     const { loading, error, data } = useQuery(MATCH_HISTORY)
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error :(</p>
 
-    return data.matches.map(({ id, result, player }: MatchHistoryProps) => (
+    return data.matches.map(({ id, result, opponentName, opponentImageURL }: MatchHistoryProps) => (
         <div key={id}>
             <p>
-                <Avatar shape="circle" size={50} src={player.imageURL} />
-                You {result} against {player.name}
+                <Avatar shape="circle" size={50} src={opponentImageURL} />
+                You {result} against {opponentName}
             </p>
         </div>
     ))
-
-    // const columns = [
-    //     {
-    //         title: 'Result',
-    //         dataIndex: 'result',
-    //         key: 'result',
-    //     },
-    // ]
-
-    // return <Table columns={columns} dataSource={data.matches} />
 }
+
+// const columns = [
+//     {
+//         title: 'Result',
+//         dataIndex: 'result',
+//         key: 'result',
+//     },
+// ]
+
+// return <Table columns={columns} dataSource={data.matches} />
