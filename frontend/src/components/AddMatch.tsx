@@ -1,18 +1,17 @@
 import { gql, useMutation } from '@apollo/client'
 import React from 'react'
 
-const ADD_MATCH = gql`
-    mutation addMatch($result: String!, $opponentName: String!, $opponentImageURL: String!) {
-        addMatch(input: { result: $result, opponentName: $opponentName, opponentImageURL: $opponentImageURL }) {
-            id
-            result
-            opponentName
-            opponentImageURL
+export const AddMatch = () => {
+    const ADD_MATCH = gql`
+        mutation addMatch($result: String!, $opponentName: String!, $opponentImageURL: String!) {
+            addMatch(input: { result: $result, opponentName: $opponentName, opponentImageURL: $opponentImageURL }) {
+                id
+                result
+                opponentName
+                opponentImageURL
+            }
         }
-    }
-`
-
-const AddMatch = () => {
+    `
     // let result: string, opponentName: string, opponentImageURL: string
     const [addMatch] = useMutation(ADD_MATCH)
 
@@ -35,5 +34,3 @@ const AddMatch = () => {
         </div>
     )
 }
-
-export default AddMatch

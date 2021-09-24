@@ -8,7 +8,7 @@ import { PlayerCard } from './components/PlayerCard'
 import { Route, Switch } from 'react-router-dom'
 import { MatchHistory } from './components/History'
 import { Header } from './components/Header'
-import AddMatch from './components/AddMatch'
+import { AddMatch } from './components/AddMatch'
 
 function App() {
     const handSelection = ['PAPER', 'SCISSORS', 'ROCK']
@@ -16,6 +16,7 @@ function App() {
     const [isDataLoaded, setIsDataLoaded] = useState(true)
     const [isRefresh, setIsRefresh] = useState<boolean>(false)
     const [score, setScore] = useState(0)
+    //const [, setAddMatch] = useState(false)
 
     const [randomPlayer, setRandomPlayer] = useState<RandomPlayer>()
     type RandomPlayer = {
